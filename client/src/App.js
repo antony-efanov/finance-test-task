@@ -1,25 +1,38 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import { io } from "socket.io-client";
+import { useState } from "react";
 
-function App() {
+const socket = io("http://localhost:4000", {
+  autoConnect: true,
+  forceNew: true,
+  reconnection: true,
+  transports: ["websocket", "polling"],
+});
+
+const App = () => {
+  const [prices, setPrices] = useState([]);
+
+  socket.on("connect", () => {
+    console.log(socket.id);
+    socket.emit("start");
+  });
+
+  socket.on("ticker", (quotes) => {
+    setPrices(quotes);
+  });
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {prices.map((e, i) => {
+        return (
+          <>
+            <h1>{e.ticker}</h1>
+            <h2>{e.price}</h2>
+          </>
+        );
+      })}
     </div>
   );
-}
+};
 
 export default App;
