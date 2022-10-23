@@ -1,6 +1,6 @@
 import { io } from "socket.io-client";
-import { useEffect, useRef } from "react";
-import { QuoteType } from "./types";
+import { useEffect } from "react";
+import { QuoteType } from "../../store/slices/Quotes/types";
 import { Quote } from "./components/Quote";
 import { useAppDispatch, useAppSelector } from "../../hooks/useRedux";
 import { setQuotes } from "../../store/slices/Quotes/quotesSlice";
@@ -36,6 +36,7 @@ const Quotes = () => {
               key={index}
               ticker={quote.ticker}
               price={quote.price}
+              exchange={quote.exchange}
               change={quote.change}
               change_percent={quote.change_percent}
               dividend={quote.dividend}

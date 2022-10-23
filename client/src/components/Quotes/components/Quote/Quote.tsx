@@ -1,22 +1,50 @@
 import { FC, useState } from "react";
 import { IProps } from "./types";
+import { QuoteType } from "../../types";
 import { ReactComponent as Arrow } from "../../../../assets/icons/arrow.svg";
 import { ReactComponent as Favorite } from "../../../../assets/icons/favorite.svg";
 import { ReactComponent as Info } from "../../../../assets/icons/info.svg";
+
 import { useAppDispatch, useAppSelector } from "../../../../hooks/useRedux";
+import {
+  addFavoriteQuote,
+  deleteFavoriteQuote,
+} from "../../../../store/slices/Quotes/quotesSlice";
 
 const Quote: FC<IProps> = ({
   ticker,
   price,
   change,
+  exchange,
   change_percent,
   dividend,
   profit,
   last_trade_time,
 }) => {
-  const favoriteQuotes = useAppSelector((state) => state.quotes.favoriteQuotes);
+  const currentQuote = {
+    ticker: ticker,
+    price: price,
+    exchange: exchange,
+    change: change,
+    change_percent: change_percent,
+    dividend: dividend,
+    profit: profit,
+    last_trade_time: last_trade_time,
+  };
 
-  const checkIsFavorited = (ticker: string) => {};
+  const { favoriteQuotes } = useAppSelector((state) => state.quotes);
+  const dispatch = useAppDispatch();
+
+  const onClickFavorite = (currentQuote: QuoteType) => {
+    const isFavorited = favoriteQuotes.some(
+      (quote) => quote.ticker === currentQuote.ticker
+    );
+    if (isFavorited) {
+      dispatch(deleteFavoriteQuote(currentQuote));
+    } else {
+      dispatch(addFavoriteQuote(currentQuote));
+    }
+  };
 
   const [moreVisibility, setMoreVisibility] = useState(false);
 
@@ -28,6 +56,12 @@ const Quote: FC<IProps> = ({
     return change_percent.indexOf("-") === -1 ? "growing" : "falling";
   };
 
+  const [disabled, setDisabled] = useState(false);
+
+  const onClickDisable = () => {
+    setDisabled((prev) => !prev);
+  };
+
   return (
     <div className="quote">
       <div className="quote__main-info">
@@ -35,17 +69,19 @@ const Quote: FC<IProps> = ({
           <h1 className={`quote__main_ticker quote__main_${ticker}`}>
             {ticker}
           </h1>
-          <h2 className="quote__main_price">{price}</h2>
+          <h2 className="quote__main_price">{disabled ? "Disabled" : price}</h2>
         </div>
-        <div className="quote__change">
-          <div
-            className={`quote__change_percent quote__change_percent_${checkIsGrowing()}`}
-          >
-            {change_percent}
-            {"%"}
+        {!disabled && (
+          <div className="quote__change">
+            <div
+              className={`quote__change_percent quote__change_percent_${checkIsGrowing()}`}
+            >
+              {change_percent}
+              {"%"}
+            </div>
+            <div className="quote__change_price">{change}</div>
           </div>
-          <div className="quote__change_price">{change}</div>
-        </div>
+        )}
       </div>
       <button
         onClick={onMoreVisibility}
@@ -72,8 +108,11 @@ const Quote: FC<IProps> = ({
           <div className="quote__more__settings_favorite">
             <div className="text">Favorite</div>
             <Favorite className="icon" />
+            <button onClick={() => onClickFavorite(currentQuote)}> add </button>
           </div>
-          <div className="quote__more__settings_disable">Disable</div>
+          <div className="quote__more__settings_disable">
+            <button onClick={onClickDisable}>Disable</button>
+          </div>
         </div>
       </div>
     </div>
