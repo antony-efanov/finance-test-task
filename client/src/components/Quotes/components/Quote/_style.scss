@@ -28,13 +28,6 @@
   &__main-info {
     display: flex;
     justify-content: space-between;
-    .quote__main {
-      &_ticker {
-      }
-
-      &_FB {
-      }
-    }
 
     .quote__change {
       display: flex;
@@ -60,6 +53,10 @@
 
         &_falling {
           background-color: hsl(0, 33%, 56%);
+        }
+
+        &_zero {
+          background-color: hsl(0, 0%, 69%);
         }
       }
 
@@ -113,6 +110,7 @@
     &__income {
       display: flex;
       flex-direction: column;
+      justify-content: start;
       gap: 5px;
       padding: 1rem;
       width: 50%;
@@ -124,12 +122,14 @@
       }
 
       &_time {
-        .icon {
-          cursor: help;
-        }
         display: flex;
         gap: 3px;
         font-size: 0.65rem;
+        margin-top: auto;
+
+        .icon {
+          cursor: help;
+        }
       }
 
       span {
@@ -163,6 +163,13 @@
           }
         }
       }
+
+      &_disable {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
     }
   }
 
@@ -172,4 +179,9 @@
     // backdrop-filter: blur(10px);
     transform: translateX(-50%) translateY(0px);
   }
+}
+
+.quote.disabled {
+  color: rgb(100, 100, 100);
+  background-color: rgb(216, 216, 216);
 }

@@ -5,6 +5,7 @@ import { ReactComponent as Arrow } from "../../../../assets/icons/arrow.svg";
 import { ReactComponent as Favorite } from "../../../../assets/icons/favorite.svg";
 import { ReactComponent as Info } from "../../../../assets/icons/info.svg";
 
+import Switch from "react-switch";
 import { useAppDispatch, useAppSelector } from "../../../../hooks/useRedux";
 import {
   addFavoriteQuote,
@@ -35,10 +36,11 @@ const Quote: FC<IProps> = ({
   const { favoriteQuotes } = useAppSelector((state) => state.quotes);
   const dispatch = useAppDispatch();
 
+  const isFavorited = !!favoriteQuotes.some(
+    (quote) => quote.ticker === currentQuote.ticker
+  );
+
   const onClickFavorite = (currentQuote: QuoteType) => {
-    const isFavorited = favoriteQuotes.some(
-      (quote) => quote.ticker === currentQuote.ticker
-    );
     if (isFavorited) {
       dispatch(deleteFavoriteQuote(currentQuote));
     } else {
@@ -47,23 +49,23 @@ const Quote: FC<IProps> = ({
   };
 
   const [moreVisibility, setMoreVisibility] = useState(false);
+  const [disabled, setDisabled] = useState(false);
 
   const onMoreVisibility = () => {
     setMoreVisibility((prev) => !prev);
   };
 
   const checkIsGrowing = () => {
+    if (change_percent === "0.00") return "zero";
     return change_percent.indexOf("-") === -1 ? "growing" : "falling";
   };
-
-  const [disabled, setDisabled] = useState(false);
 
   const onClickDisable = () => {
     setDisabled((prev) => !prev);
   };
 
   return (
-    <div className="quote">
+    <div className={disabled ? "quote disabled" : "quote"}>
       <div className="quote__main-info">
         <div className="quote__main">
           <h1 className={`quote__main_ticker quote__main_${ticker}`}>
@@ -94,24 +96,39 @@ const Quote: FC<IProps> = ({
       <div className={moreVisibility ? "quote__more visible" : "quote__more"}>
         <div className="quote__more__income">
           <div className="quote__more__income_divident">
-            dividend <span>{dividend}</span>
+            dividend <span>{disabled ? "0.00" : dividend}</span>
           </div>
           <div className="quote__more__income_profit">
-            profit <span>{profit}</span>
+            profit <span>{disabled ? "0.00" : profit}</span>
           </div>
           <div className="quote__more__income_time">
-            <Info title="Last trade time" className="icon" />
+            <Info
+              title={`${last_trade_time} Last trade time`}
+              className="icon"
+            />
             <span>{last_trade_time}</span>
           </div>
         </div>
         <div className="quote__more__settings">
           <div className="quote__more__settings_favorite">
             <div className="text">Favorite</div>
-            <Favorite className="icon" />
-            <button onClick={() => onClickFavorite(currentQuote)}> add </button>
+            <Switch
+              onChange={() => onClickFavorite(currentQuote)}
+              checked={isFavorited}
+              width={45}
+              height={20}
+              className="favorite-switch"
+            />
           </div>
           <div className="quote__more__settings_disable">
-            <button onClick={onClickDisable}>Disable</button>
+            <div>Disable</div>
+            <Switch
+              onChange={onClickDisable}
+              checked={disabled}
+              width={45}
+              height={20}
+              className="disable-switch"
+            />
           </div>
         </div>
       </div>

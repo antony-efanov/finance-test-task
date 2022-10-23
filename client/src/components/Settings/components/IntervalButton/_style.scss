@@ -1,0 +1,26 @@
+.interval__button {
+  cursor: pointer;
+  font-weight: 500;
+  width: 3rem;
+  height: 2rem;
+  background-color: $colorWhite;
+  border: none;
+  border-radius: 5px;
+  box-shadow: 0 2px 0 $colorBorder;
+
+  &:hover {
+    background-color: hsl(0, 0%, 95%);
+  }
+
+  &:active {
+    transform: translateY(2px);
+    background-color: hsl(0, 0%, 90%);
+    box-shadow: 0 0 0 $colorBorder;
+  }
+}
+
+.interval__button.checked {
+  background-color: hsl(0, 0%, 85%);
+  box-shadow: 0 0 0 $colorBorder;
+  transform: translateY(2px);
+}

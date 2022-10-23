@@ -49,7 +49,7 @@ const utcDate = () => {
   const month = isZeroNeeded(now.getMonth());
   const year = now.getFullYear();
 
-  return `${hours}:${minutes} ${day}.${month}.${year}`;
+  return `${hours}:${minutes}`;
 };
 
 const getQuotes = (socket) => {

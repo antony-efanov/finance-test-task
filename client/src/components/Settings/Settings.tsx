@@ -1,18 +1,18 @@
-import { useAppDispatch } from "../../hooks/useRedux";
-import { setInterval } from "../../store/slices/Quotes/quotesSlice";
+import { IntervalButton } from "./components/IntervalButton";
 
 const Settings = () => {
-  const dispatch = useAppDispatch();
-
-  const onChangeInterval = (value: number) => {
-    dispatch(setInterval(value));
-  };
-
   return (
-    <>
-      <button onClick={() => onChangeInterval(2000)}>Change 2000</button>
-      <button onClick={() => onChangeInterval(5000)}>Change 5000</button>
-    </>
+    <div className="interval">
+      <h1 className="interval__title">Update quotes every</h1>
+      <div className="interval__buttons">
+        <IntervalButton interval={2} />
+        <IntervalButton interval={5} />
+        <IntervalButton interval={10} />
+        <IntervalButton interval={30} />
+        <IntervalButton interval={60} />
+      </div>
+      <div className="interval__seconds">seconds.</div>
+    </div>
   );
 };
 

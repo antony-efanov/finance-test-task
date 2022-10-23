@@ -8,8 +8,11 @@
 @import "../pages/Main/style";
 
 // Components
+@import "../components/Header/style";
 @import "../components/Quotes/style";
 @import "../components/Quotes/components/Quote/style";
+@import "../components/Settings/style";
+@import "../components/Settings/components/IntervalButton/style";
 
 html {
   font-family: "Roboto", sans-serif;

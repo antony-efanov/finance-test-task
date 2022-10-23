@@ -1,0 +1,22 @@
+.header {
+  position: relative;
+  padding: 1rem;
+  background-color: hsl(0, 0%, 73%);
+  margin-block-end: 2rem;
+
+  h1 {
+    margin: 0;
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 0;
+    background-color: hsl(0, 0%, 73%);
+    width: 100vw;
+    height: 100%;
+  }
+}

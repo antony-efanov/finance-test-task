@@ -1,7 +1,11 @@
-import React from "react";
+import { Settings } from "../Settings";
 
 const Header = () => {
-  return <div>Header</div>;
+  return (
+    <header className="header">
+      <Settings />
+    </header>
+  );
 };
 
 export default Header;
