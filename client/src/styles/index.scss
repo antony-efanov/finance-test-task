@@ -1,0 +1,17 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap");
+
+// Essentials
+@import "./essentials/normalize";
+@import "./essentials/variables";
+
+// Pages
+@import "../pages/Main/style";
+
+// Components
+@import "../components/Quotes/style";
+@import "../components/Quotes/components/Quote/style";
+
+html {
+  font-family: "Roboto", sans-serif;
+  background-color: $colorBG;
+}

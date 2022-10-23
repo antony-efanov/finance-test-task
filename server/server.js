@@ -1,15 +1,25 @@
 "use strict";
 const express = require("express");
-const http = require("http");
-const io = require("socket.io");
-const cors = require("cors");
 const app = express();
-app.use(cors());
-
+const http = require("http");
 const server = http.createServer(app);
 
-const FETCH_INTERVAL = 5000;
+const io = require("socket.io");
+const cors = require("cors");
+
 const PORT = process.env.PORT || 4000;
+
+app.use(cors());
+
+server.listen(PORT, () => {
+  console.log(`Streaming service is running on http://localhost:${PORT}`);
+});
+
+const socketServer = io(server, {
+  cors: {
+    origin: ["http://localhost:3000"],
+  },
+});
 
 const tickers = [
   "AAPL", // Apple
@@ -20,68 +30,69 @@ const tickers = [
   "TSLA", // Tesla
 ];
 
-function randomValue(min = 0, max = 1, precision = 0) {
+const randomValue = (min = 0, max = 1, precision = 0) => {
   const random = Math.random() * (max - min) + min;
   return random.toFixed(precision);
-}
+};
 
-function utcDate() {
+const utcDate = () => {
+  const isZeroNeeded = (date) => {
+    return date < 10 ? `0${date}` : date;
+  };
+
   const now = new Date();
-  return new Date(
-    now.getUTCFullYear(),
-    now.getUTCMonth(),
-    now.getUTCDate(),
-    now.getUTCHours(),
-    now.getUTCMinutes(),
-    now.getUTCSeconds()
-  );
-}
 
-function getQuotes(socket) {
+  const hours = isZeroNeeded(now.getHours());
+  const minutes = isZeroNeeded(now.getMinutes());
+
+  const day = isZeroNeeded(now.getDate());
+  const month = isZeroNeeded(now.getMonth());
+  const year = now.getFullYear();
+
+  return `${hours}:${minutes} ${day}.${month}.${year}`;
+};
+
+const getQuotes = (socket) => {
   const quotes = tickers.map((ticker) => ({
     ticker,
     exchange: "NASDAQ",
     price: randomValue(100, 300, 2),
-    change: randomValue(0, 200, 2),
-    change_percent: randomValue(0, 1, 2),
+    change: randomValue(100, 200, 2),
+    change_percent: randomValue(1, -1, 2),
     dividend: randomValue(0, 1, 2),
-    yield: randomValue(0, 2, 2),
+    profit: randomValue(0, 2, 2),
     last_trade_time: utcDate(),
   }));
 
   socket.emit("ticker", quotes);
-}
+};
 
-function trackTickers(socket) {
-  // run the first time immediately
+const trackTickers = (socket, interval = 5000) => {
+  const fetchInterval = interval;
+
+  // first quotes
   getQuotes(socket);
 
-  // every N seconds
-  const timer = setInterval(function () {
+  // update N seconds
+  const timer = setInterval(() => {
     getQuotes(socket);
-  }, FETCH_INTERVAL);
+  }, fetchInterval);
 
-  socket.on("disconnect", function () {
+  socket.on("disconnect", () => {
     clearInterval(timer);
   });
-}
 
-const socketServer = io(server, {
-  cors: {
-    origin: ["http://localhost:3000"],
-  },
-});
+  socket.on("changeInterval", () => {
+    clearInterval(timer);
+  });
+};
 
 socketServer.on("connection", (socket) => {
   socket.on("start", () => {
     trackTickers(socket);
   });
-});
 
-app.get("/", function (req, res) {
-  res.sendFile(__dirname + "/index.html");
-});
-
-server.listen(PORT, () => {
-  console.log(`Streaming service is running on http://localhost:${PORT}`);
+  socket.on("changeInterval", (value) => {
+    trackTickers(socket, value);
+  });
 });
