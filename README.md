@@ -14,17 +14,17 @@ Requirements:
 You can get some ideas how your application may look like on the [Google Finance](https://www.google.com/finance/) page.
 
 As a bonus you can implement (please describe implemented bonus functionality in this file):
-- any additional visual effects to highlight positive or negative changes in the prices
-- the possibility to switch on/off tickers by user
-- the possibility to specify interval time by user
-- the possibility to add/remove ticker from watching group
-- any additional functionality you consider useful
+- any additional visual effects to highlight positive or negative changes in the prices // (✅DONE)
+- the possibility to switch on/off tickers by user // (✅DONE)
+- the possibility to specify interval time by user // (✅DONE)
+- the possibility to add/remove ticker from watching group // (✅DONE)
+- any additional functionality you consider useful // ➡️ added nodemon to track changes on server and automatically update it.
 
 You should use the next technologies:
 - React (preferable with hooks)
-- Redux (with Redux-Thunk or any other Redux middleware you are familiar) or any other state-manager library you want
+- Redux (with Redux-Thunk or any other Redux middleware you are familiar) or any other state-manager library you want // ✅ used Redux Toolkit with slices
 - Socket.io - to connect to the service
-- any UI library you want, or you can use just pure CSS
+- any UI library you want, or you can use just pure CSS // ✅ styled via SCSS
 - Testing Library
 
 We will assess the next parts:
