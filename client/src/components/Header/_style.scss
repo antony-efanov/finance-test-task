@@ -1,7 +1,9 @@
 .header {
+  display: flex;
+  justify-content: center;
   position: relative;
   padding: 1rem;
-  background-color: hsl(0, 0%, 73%);
+  background-color: hsl(59, 79%, 72%);
   margin-block-end: 2rem;
 
   h1 {
@@ -15,7 +17,19 @@
     left: 50%;
     transform: translateX(-50%);
     top: 0;
-    background-color: hsl(0, 0%, 73%);
+    background-color: hsl(59, 79%, 72%);
+    width: 100vw;
+    height: 100%;
+  }
+
+  &::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 2px;
+    background-color: $colorBorder;
     width: 100vw;
     height: 100%;
   }

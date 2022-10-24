@@ -2,7 +2,6 @@ import { FC, useState } from "react";
 import { IProps } from "./types";
 import { QuoteType } from "../../types";
 import { ReactComponent as Arrow } from "../../../../assets/icons/arrow.svg";
-import { ReactComponent as Favorite } from "../../../../assets/icons/favorite.svg";
 import { ReactComponent as Info } from "../../../../assets/icons/info.svg";
 
 import Switch from "react-switch";
@@ -115,19 +114,26 @@ const Quote: FC<IProps> = ({
             <Switch
               onChange={() => onClickFavorite(currentQuote)}
               checked={isFavorited}
-              width={45}
-              height={20}
+              disabled={disabled ? true : false}
+              width={38}
+              height={16}
               className="favorite-switch"
+              uncheckedIcon={false}
+              offColor={"#c7c7c7"}
             />
           </div>
+
           <div className="quote__more__settings_disable">
             <div>Disable</div>
             <Switch
               onChange={onClickDisable}
               checked={disabled}
-              width={45}
-              height={20}
+              width={38}
+              height={16}
               className="disable-switch"
+              offColor={"#c7c7c7"}
+              onColor={"#b34040"}
+              uncheckedIcon={false}
             />
           </div>
         </div>

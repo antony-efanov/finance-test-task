@@ -1,0 +1,68 @@
+.favorites {
+  &__title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: $colorDark;
+
+    button {
+      cursor: pointer;
+      background-color: transparent;
+      border: none;
+      height: 100%;
+    }
+
+    &_arrow {
+      transform: rotate(90deg);
+      transition: 150ms ease-in-out;
+    }
+
+    &_arrow.opened {
+      transform: rotate(180deg);
+    }
+  }
+
+  &__counter {
+    color: $colorWhite;
+    font-weight: 500;
+    font-size: 0.65rem;
+    display: grid;
+    place-items: center;
+    position: relative;
+    left: 5px;
+    bottom: 5px;
+    width: 20px;
+    height: 20px;
+    border-radius: 100vw;
+    background-color: hsl(0, 33%, 56%);
+  }
+
+  .favorite-quotes {
+    visibility: hidden;
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: 200ms ease-in-out;
+  }
+
+  .favorite-quotes.opened {
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .favoritesEmpty {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    &__text {
+      color: $colorDark;
+    }
+
+    &__travolta {
+      border-radius: 20px;
+      max-width: 200px;
+    }
+  }
+}
